@@ -105,7 +105,7 @@ func main() {
 		log.Printf("Error stopping gRPC server: %v", err)
 	}
 	if err := httpApp.Shutdown(ctx); err != nil {
-		log.Printf("Error stopping HTTP server: %v", err)
+		log.Printf("Error when stopping HTTP server: %v", err)
 	}
 
 	log.Println("Servers stopped gracefully")
