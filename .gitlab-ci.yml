@@ -1,0 +1,46 @@
+stages:
+  - build
+  - test
+  - docker
+
+variables:
+  DOCKER_DRIVER: overlay2
+  IMAGE_NAME: myrepo/auth-service
+
+build:
+  stage: build
+  image: golang:1.21
+  script:
+    - go mod download
+    - go build -o auth-service ./cmd
+  artifacts:
+    paths:
+      - auth-service
+
+unit_tests:
+  stage: test
+  image: golang:1.21
+  script:
+    - go test ./... -short
+
+integration_tests:
+  stage: test
+  image: golang:1.21
+  services:
+    - name: postgres:15
+      alias: db
+  variables:
+    DATABASE_URL: postgres://testuser:testpass@db:5432/testdb?sslmode=disable
+  script:
+    - go test ./tests/integration/...
+
+docker_build:
+  stage: docker
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+  script:
+    - docker build -t $IMAGE_NAME:latest .
+    - docker push $IMAGE_NAME:latest

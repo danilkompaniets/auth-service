@@ -3,7 +3,6 @@ package security
 import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
-	"strconv"
 	"time"
 )
 
@@ -39,17 +38,12 @@ func (j *JWTManager) VerifyRefreshToken(token string) (int64, error) {
 		return 0, fmt.Errorf("invalid claims type")
 	}
 
-	userID, ok := claims["user_id"].(string)
+	userIDFloat, ok := claims["user_id"].(float64)
 	if !ok {
 		return 0, fmt.Errorf("user_id not found in token")
 	}
 
-	convertedId, err := strconv.Atoi(userID)
-	if err != nil {
-		return 0, err
-	}
-
-	return int64(convertedId), nil
+	return int64(userIDFloat), nil
 }
 
 func (j *JWTManager) VerifyAccessToken(token string) (int64, error) {
@@ -72,17 +66,12 @@ func (j *JWTManager) VerifyAccessToken(token string) (int64, error) {
 		return 0, fmt.Errorf("invalid claims type")
 	}
 
-	userID, ok := claims["user_id"].(string)
+	userIDFloat, ok := claims["user_id"].(float64)
 	if !ok {
 		return 0, fmt.Errorf("user_id not found in token")
 	}
 
-	convertedId, err := strconv.Atoi(userID)
-	if err != nil {
-		return 0, err
-	}
-
-	return int64(convertedId), nil
+	return int64(userIDFloat), nil
 }
 
 func (j *JWTManager) GenerateAccessToken(userID int64) (string, error) {
