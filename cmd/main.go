@@ -102,7 +102,7 @@ func main() {
 	defer cancel()
 
 	if err := grpcApp.Stop(ctx); err != nil {
-		log.Printf("Error stopping gRPC server: %v", err)
+		log.Printf("Error when stopping gRPC server: %v", err)
 	}
 	if err := httpApp.Shutdown(ctx); err != nil {
 		log.Printf("Error when stopping HTTP server: %v", err)
