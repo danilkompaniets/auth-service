@@ -1,0 +1,14 @@
+application:
+  grpc_addr: "localhost:9090"
+  http_addr: "localhost:8081"
+  database:
+    host: "localhost"
+    port: "5434"
+    username: "myuser"
+    password: "mypassword"
+    database: "authDb"
+  environment:
+    accessTokenSecret: ""
+    refreshTokenSecret: ""
+    accessTokenTTL: "15m"
+    refreshTokenTTL: "720h"
