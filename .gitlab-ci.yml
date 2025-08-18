@@ -17,6 +17,7 @@ build:
     paths:
       - auth-service
 
+
 unit_tests:
   stage: test
   image: golang:1.21
