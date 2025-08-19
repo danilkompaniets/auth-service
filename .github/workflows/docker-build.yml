@@ -35,7 +35,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t your-dockerhub-username/auth-service:latest ./auth-service
+          docker build -t your-dockerhub-username/auth-service:latest ./
 
       - name: Push Docker image
         run: |
