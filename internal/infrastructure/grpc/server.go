@@ -5,6 +5,7 @@ import (
 	"github.com/danilkompaniets/auth-service/internal/infrastructure/config"
 	grpc2 "github.com/danilkompaniets/auth-service/internal/interfaces/grpc"
 	gen_auth "github.com/danilkompaniets/go-chat-common/gen/gen-auth"
+	grpc_prometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
 	"google.golang.org/grpc"
 	"log"
 	"net"
@@ -25,8 +26,15 @@ func NewGRPCApp(handler *grpc2.AuthGRPCHandler, cfg config.Config) *GRPCApp {
 }
 
 func (a *GRPCApp) Run() error {
-	a.grpcServer = grpc.NewServer()
+	a.grpcServer = grpc.NewServer(
+		grpc.UnaryInterceptor(grpc_prometheus.UnaryServerInterceptor),
+		grpc.StreamInterceptor(grpc_prometheus.StreamServerInterceptor),
+	)
+
 	gen_auth.RegisterAuthServiceServer(a.grpcServer, a.handler)
+
+	grpc_prometheus.Register(a.grpcServer)
+	grpc_prometheus.EnableHandlingTimeHistogram() // замер времени запросов
 
 	lis, err := net.Listen("tcp", a.cfg.App.GrpcAddr)
 	if err != nil {

@@ -1,6 +1,7 @@
 application:
   grpc_addr: "localhost:9090"
   http_addr: "localhost:8081"
+  prometheus_addr: "localhost:5001"
   database:
     host: "localhost"
     port: "5434"

@@ -74,6 +74,8 @@ func main() {
 
 	errs := make(chan error, 2)
 
+	go http.StartMetricsServer(cfg.App.PrometheusAddr) // этот порт будет доступен для Prometheus
+
 	go func() {
 		log.Println("Starting gRPC server...")
 		if err := grpcApp.Run(); err != nil {
@@ -102,7 +104,7 @@ func main() {
 	defer cancel()
 
 	if err := grpcApp.Stop(ctx); err != nil {
-		log.Printf("Error when stopping gRPC server: %v", err)
+		log.Printf("Error stopping gRPC server: %v", err)
 	}
 	if err := httpApp.Shutdown(ctx); err != nil {
 		log.Printf("Error when stopping HTTP server: %v", err)

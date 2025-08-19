@@ -12,10 +12,11 @@ type Config struct {
 }
 
 type appConfig struct {
-	GrpcAddr string         `yaml:"grpc_addr"`
-	HttpAddr string         `yaml:"http_addr"`
-	Database databaseConfig `yaml:"database"`
-	Env      envConfig      `yaml:"environment"`
+	GrpcAddr       string         `yaml:"grpc_addr"`
+	HttpAddr       string         `yaml:"http_addr"`
+	PrometheusAddr string         `yaml:"prometheus_addr"`
+	Database       databaseConfig `yaml:"database"`
+	Env            envConfig      `yaml:"environment"`
 }
 type envConfig struct {
 	AccessTokenSecret  string `yaml:"accessTokenSecret"`
